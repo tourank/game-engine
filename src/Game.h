@@ -12,6 +12,7 @@ class Game {
     public:
         Game();
         ~Game();
+        int ticksLastFrame;
         bool checkIfRunning() const; //getter
         void initialize(int width, int height);
         void processInput();

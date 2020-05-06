@@ -62,11 +62,19 @@ void Game::processInput() {
     }
 }
 void Game::update() {
-    
-    projectilePosX += projectiveVelX;
-    projectilePosY += projectiveVelY;
+    //Wait until 16 ms has ellapsed since last frame
+    //if we render/update frames too quick we must put process to sleep to sync 
+    while(!SDL_TICKS_PASSED(SDL_GetTicks(),ticksLastFrame *FRAME_TARGET_TIME);
+    //difference in ticks since last frame converted to seconds 
+    float deltaTime = (SDL_GetTicks() - ticksLastFrame)/ 1000.0f;
+    //Must cap delta time to maintain synchronous behaviour 
+    deltaTime = (deltaTime > 0.05f) ? 0.05f : deltaTime;
+    ticksLastFrame = SDL_GetTicks();
+    projectilePosX += projectiveVelX * deltaTime;
+    projectilePosY += projectiveVelY * deltaTime;
 }
 void Game::Renderer() {
+    
     SDL_RenderClear(renderer);
     SDL_SetRenderDrawColor(renderer, 21, 21, 21, 255);
     SDL_RenderClear(renderer);//clear back buffer

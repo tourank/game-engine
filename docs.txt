@@ -1,0 +1,23 @@
+deltaTime needed since game will run at a rate depending on an individual's CPU, for e.g. the number of times 
+our main game loop executes depends on this. Thus we introduce delta time:
+float deltaTime = (SDL_GetTicks() - ticksLastFrame) / 1000.0f
+simply compares the clock ticks between the current and last frame. this quantity is in milliseconds, so divide by 1000 to convert to 
+seconds. this gives us the amount of time since the last frame 
+We no longer think about how many pixels per frame, but how many pixels per second. Thus, we can adjust  projectile position with the following:
+projectile.position.x += 20 * deltaTime
+the position of the projectile is now standardized accross all computers because it moves 20 pixels per every clock tick of your CPU, same as
+everyone else's
+
+Now our game objects will move correctly regardless of the frame rate, and as a general rule, all objects in the scene should be updated
+as a function of delta time 
+
+we need a delay function because an infinite while loop running in our executable takes 100% of our CPU time. We have SDL_Delay(int ms) function
+where the int specifies how long you want our process to sleep
+
+relationship between powers and bases i.e. powers of 2 and mod 2 
+every power of 2 in binary will obv be some variation of 10000 for arbitrary 0s. 
+in base 10 we express everything in powers of 10 and and add together, aka, how many 1s do we need, 10s, 100s, 100s, etc corresponds to
+asking how many 10^n for arbitrary n, and in base 2 we instead ask the same question but for 2, i.e. how many 2s, 4s, 8s, 16s, etc.
+to make up this symbol ()
+base 0, base 1 don't exist cause they don't increase geometrically 
+if we split bits into signed unsigned, note why the leading bit indicates that its signed 

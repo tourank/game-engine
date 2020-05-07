@@ -1,7 +1,7 @@
 #include <iostream>
 #include "constants.h"
 #include "Game.h"
-
+#include "../lib/glm/glm.hpp" //header to glm library downloaded
 
 Game::Game() {
     this->isRunning = false;
@@ -13,10 +13,8 @@ bool Game::checkIfRunning() const {
     return this->isRunning;
 }
 
-float projectilePosX = 0.0f;
-float projectilePosY = 0.0f;
-float projectiveVelX = 0.5f;
-float projectiveVelY = 0.5f;
+glm::vec2 projectilePos = glm::vec2(0.0f, 0.0f);
+glm::vec2 projectileVel = glm::vec2(20.0f, 20.0f);
 
 void Game::initialize(int width, int height) {
     if(SDL_Init(SDL_INIT_EVERYTHING) != 0){
@@ -64,27 +62,32 @@ void Game::processInput() {
 void Game::update() {
     //Wait until 16 ms has ellapsed since last frame
     //if we render/update frames too quick we must put process to sleep to sync 
-    while(!SDL_TICKS_PASSED(SDL_GetTicks(),ticksLastFrame *FRAME_TARGET_TIME);
+    int timeToWait = FRAME_TARGET_TIME - (SDL_GetTicks() - ticksLastFrame);
+    if(timeToWait > 0 && timeToWait <= FRAME_TARGET_TIME){
+        SDL_Delay(timeToWait);
+    }
+
     //difference in ticks since last frame converted to seconds 
     float deltaTime = (SDL_GetTicks() - ticksLastFrame)/ 1000.0f;
+
     //Must cap delta time to maintain synchronous behaviour 
     deltaTime = (deltaTime > 0.05f) ? 0.05f : deltaTime;
+
     ticksLastFrame = SDL_GetTicks();
-    projectilePosX += projectiveVelX * deltaTime;
-    projectilePosY += projectiveVelY * deltaTime;
+
+    projectilePos = glm::vec2(projectilePos.x + projectileVel.x * deltaTime, projectilePos.y + projectileVel.y * deltaTime);
 }
 void Game::Renderer() {
     
-    SDL_RenderClear(renderer);
     SDL_SetRenderDrawColor(renderer, 21, 21, 21, 255);
-    SDL_RenderClear(renderer);//clear back buffer
-    int convertedProjectilePosX = int (projectilePosX);
-    int convertedProjectilePosY = int (projectilePosY);
-    SDL_Rect projectile;
-    projectile.x = convertedProjectilePosX; 
-    projectile.y = convertedProjectilePosY;
-    projectile.w = 10;
-    projectile.h = 10;
+    SDL_RenderClear(renderer);
+
+    SDL_Rect projectile = {
+        (int) projectilePos.x,
+        (int) projectilePos.y,
+        10,
+        10
+    };
     SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
     SDL_RenderFillRect(renderer, &projectile);
     SDL_RenderPresent(renderer);

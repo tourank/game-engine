@@ -1,0 +1,33 @@
+**PLANNING CLASSES**
+
+Entity-Component:
+
+entities can be players, enemies, doorTrigger, particles, etc.
+each entity has a component such as a transform component like position, rotation, velocity, collider,sprite  etc.
+Classes:
+
+Entity:
+
+- contains a list of components 
+- update()
+- render()
+
+Component:
+
+- Entity *owner
+- virtual update()
+- virtual render() 
+
+EntityManager:
+
+- holds list of entities, for each entity we update and render 
+- addEntity(entity);
+- getEntity(string entityName)
+- update()
+- render()
+
+each component can have subclasses like transform, sprite, etc. that implement their own overloaded version of update() and render()
+we also specify an owner for the component 
+note that update() and render() are virtual since subclasses must implement those methods 
+
+

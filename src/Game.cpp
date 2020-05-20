@@ -52,12 +52,21 @@ void Game::initialize(int width, int height) {
 }
 void Game::loadLevel(int levelNumber){
 
-    // TODO file path might be wrong, so change it if error
-    std::string textureFilePath = "./assets/images/tank-big-right.png";
-    assetManager->addTexture("tank-image", textureFilePath.c_str());
-    Entity &newEntity(manager.addEntity("projectile"));
-    newEntity.addComponent<TransformComponent>(0,0,20,20,32,32,1);
-    newEntity.addComponent<SpriteComponent>("tank-image");
+    assetManager->addTexture("tank-image", std::string("./assets/images/tank-big-right.png").c_str());
+    assetManager->addTexture("chopper-image", std::string("./assets/images/chopper-spritesheet.png").c_str());
+    assetManager->addTexture("radar-image",std::string("./assets/images/radar.png").c_str());
+
+    Entity &tankEntity(manager.addEntity("tank"));
+    tankEntity.addComponent<TransformComponent>(0,0,20,20,32,32,1);
+    tankEntity.addComponent<SpriteComponent>("tank-image");
+
+    Entity& radarEntity(manager.addEntity("Radar"));
+    radarEntity.addComponent<TransformComponent>(720, 15, 0, 0, 64, 64, 1);
+    radarEntity.addComponent<SpriteComponent>("radar-image", 8, 150, false, true);
+
+    Entity &chopperEntity(manager.addEntity("chopper"));
+    chopperEntity.addComponent<TransformComponent>(240, 106, 0, 0, 32, 32, 1);
+    chopperEntity.addComponent<SpriteComponent>("chopper-image", 2,90,true,false);
 }
 
 // Processing input keys here 
